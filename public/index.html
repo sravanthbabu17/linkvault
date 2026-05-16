@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LinkVault — Your Personal Resource Dashboard</title>
+  <meta name="description" content="A Netflix-style dashboard to organise your links, PDFs, and videos into collections for quick access from anywhere." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-left">
+      <h1 class="logo" id="logo">
+        <span class="logo-icon">⚡</span>LinkVault
+      </h1>
+    </div>
+    <div class="navbar-center">
+      <div class="search-wrapper" id="search-wrapper">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search-input" class="search-input" placeholder="Search everything…" autocomplete="off" />
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="btn btn-ghost" id="btn-trash-log" title="Deletion Log">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        <span>Trash Log</span>
+      </button>
+      <button class="btn btn-glow" id="btn-add-item" title="Add New Item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>Add Item</span>
+      </button>
+      <button class="btn btn-outline" id="btn-add-collection" title="New Collection">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        <span>New Collection</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ============ HERO / BANNER ============ -->
+  <header class="hero" id="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-tag">Your Personal Resource Hub</p>
+      <h2 class="hero-title">All your links, PDFs &amp; videos<br/>in one place.</h2>
+      <p class="hero-sub">Organise, search, and access your resources from anywhere.</p>
+      <div class="hero-stats" id="hero-stats"></div>
+    </div>
+  </header>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="main" id="main-content">
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="empty-icon">📂</div>
+      <h3>No collections yet</h3>
+      <p>Create your first collection to start organising your resources.</p>
+      <button class="btn btn-glow" id="btn-empty-add">Create Collection</button>
+    </div>
+  </main>
+
+  <!-- ============ ACCESS CODE MODAL ============ -->
+  <div class="modal-backdrop" id="modal-access-code" style="display:none;">
+    <div class="modal modal-sm modal-code">
+      <button class="modal-close" id="modal-access-code-close">&times;</button>
+      <div class="code-modal-header">
+        <div class="code-lock-icon">🔐</div>
+        <h2 class="modal-title">Enter Access Code</h2>
+        <p class="code-subtitle">A code is required to make changes.</p>
+      </div>
+      <form id="form-access-code" autocomplete="off">
+        <div class="form-group">
+          <div class="code-input-wrapper">
+            <input type="password" id="access-code-input" class="code-input" placeholder="Enter code…" required maxlength="32" autofocus />
+          </div>
+          <p class="code-error" id="code-error" style="display:none;">Incorrect code. Please try again.</p>
+        </div>
+        <button type="submit" class="btn btn-glow btn-full">Verify &amp; Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ ADD ITEM MODAL ============ -->
+  <div class="modal-backdrop" id="modal-add-item" style="display:none;">
+    <div class="modal">
+      <button class="modal-close" id="modal-add-item-close">&times;</button>
+      <h2 class="modal-title">Add New Item</h2>
+      <form id="form-add-item" autocomplete="off">
+        <div class="form-group">
+          <label for="item-title">Title</label>
+          <input type="text" id="item-title" placeholder="e.g. React Documentation" required />
+        </div>
+        <div class="form-group">
+          <label for="item-url">URL</label>
+          <input type="url" id="item-url" placeholder="https://..." required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="item-type">Type</label>
+            <select id="item-type">
+              <option value="link">🔗 Link</option>
+              <option value="pdf">📄 PDF</option>
+              <option value="video">🎬 Video</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="item-collection">Collection</label>
+            <select id="item-collection" required></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="item-desc">Description <span class="optional">(optional)</span></label>
+          <input type="text" id="item-desc" placeholder="Short note…" />
+        </div>
+        <div class="form-group">
+          <label for="item-thumb">Thumbnail URL <span class="optional">(optional)</span></label>
+          <input type="url" id="item-thumb" placeholder="https://image-url…" />
+        </div>
+        <button type="submit" class="btn btn-glow btn-full">Add to Collection</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ ADD COLLECTION MODAL ============ -->
+  <div class="modal-backdrop" id="modal-add-collection" style="display:none;">
+    <div class="modal modal-sm">
+      <button class="modal-close" id="modal-add-collection-close">&times;</button>
+      <h2 class="modal-title">New Collection</h2>
+      <form id="form-add-collection" autocomplete="off">
+        <div class="form-group">
+          <label for="col-name">Collection Name</label>
+          <input type="text" id="col-name" placeholder="e.g. 📚 Study Materials" required />
+        </div>
+        <div class="form-group">
+          <label for="col-color">Accent Color</label>
+          <div class="color-picker" id="color-picker">
+            <button type="button" class="color-dot active" data-color="#e50914" style="background:#e50914"></button>
+            <button type="button" class="color-dot" data-color="#0071eb" style="background:#0071eb"></button>
+            <button type="button" class="color-dot" data-color="#46d369" style="background:#46d369"></button>
+            <button type="button" class="color-dot" data-color="#f5c518" style="background:#f5c518"></button>
+            <button type="button" class="color-dot" data-color="#bf94ff" style="background:#bf94ff"></button>
+            <button type="button" class="color-dot" data-color="#ff6b6b" style="background:#ff6b6b"></button>
+            <button type="button" class="color-dot" data-color="#00d4ff" style="background:#00d4ff"></button>
+            <button type="button" class="color-dot" data-color="#ff9f43" style="background:#ff9f43"></button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-glow btn-full">Create Collection</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ EDIT ITEM MODAL ============ -->
+  <div class="modal-backdrop" id="modal-edit-item" style="display:none;">
+    <div class="modal">
+      <button class="modal-close" id="modal-edit-item-close">&times;</button>
+      <h2 class="modal-title">Edit Item</h2>
+      <form id="form-edit-item" autocomplete="off">
+        <input type="hidden" id="edit-item-id" />
+        <input type="hidden" id="edit-item-col-id" />
+        <div class="form-group">
+          <label for="edit-item-title">Title</label>
+          <input type="text" id="edit-item-title" required />
+        </div>
+        <div class="form-group">
+          <label for="edit-item-url">URL</label>
+          <input type="url" id="edit-item-url" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="edit-item-type">Type</label>
+            <select id="edit-item-type">
+              <option value="link">🔗 Link</option>
+              <option value="pdf">📄 PDF</option>
+              <option value="video">🎬 Video</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-item-move">Move to Collection</label>
+            <select id="edit-item-move"></select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="edit-item-desc">Description</label>
+          <input type="text" id="edit-item-desc" />
+        </div>
+        <div class="form-group">
+          <label for="edit-item-thumb">Thumbnail URL</label>
+          <input type="url" id="edit-item-thumb" />
+        </div>
+        <div class="form-actions-row">
+          <button type="submit" class="btn btn-glow">Save Changes</button>
+          <button type="button" class="btn btn-danger" id="btn-delete-item">Delete Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ TRASH LOG MODAL ============ -->
+  <div class="modal-backdrop" id="modal-trash-log" style="display:none;">
+    <div class="modal modal-lg">
+      <button class="modal-close" id="modal-trash-log-close">&times;</button>
+      <div class="trash-header">
+        <h2 class="modal-title">🗑️ Deletion Log</h2>
+        <button class="btn btn-danger btn-sm" id="btn-clear-log">Clear Log</button>
+      </div>
+      <div class="trash-log-body" id="trash-log-body">
+        <p class="text-muted">Loading…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ CONTEXT MENU (collection actions) ============ -->
+  <div class="context-menu" id="context-menu" style="display:none;">
+    <button class="ctx-btn" id="ctx-rename">✏️ Rename</button>
+    <button class="ctx-btn" id="ctx-recolor">🎨 Change Color</button>
+    <button class="ctx-btn ctx-danger" id="ctx-delete">🗑️ Delete Collection</button>
+  </div>
+
+  <!-- ============ TOAST ============ -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

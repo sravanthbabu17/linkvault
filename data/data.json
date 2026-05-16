@@ -1,0 +1,62 @@
+{
+  "collections": [
+    {
+      "id": "demo-collection-1",
+      "name": "📚 Learning Resources",
+      "color": "#e50914",
+      "items": [
+        {
+          "id": "demo-item-1",
+          "title": "MDN Web Docs",
+          "url": "https://developer.mozilla.org",
+          "type": "link",
+          "description": "Mozilla Developer Network — Web development documentation",
+          "thumbnail": "",
+          "addedAt": "2026-05-16T00:00:00Z"
+        },
+        {
+          "id": "demo-item-2",
+          "title": "JavaScript Guide",
+          "url": "https://javascript.info",
+          "type": "link",
+          "description": "The Modern JavaScript Tutorial",
+          "thumbnail": "",
+          "addedAt": "2026-05-16T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "demo-collection-2",
+      "name": "🎬 Videos",
+      "color": "#0071eb",
+      "items": [
+        {
+          "id": "demo-item-3",
+          "title": "Fireship — 100 Seconds of Code",
+          "url": "https://www.youtube.com/c/Fireship",
+          "type": "video",
+          "description": "Quick tech explainers",
+          "thumbnail": "",
+          "addedAt": "2026-05-16T00:00:00Z"
+        }
+      ]
+    },
+    {
+      "id": "d88d40b7-5737-4da3-9f71-710a2255c4ed",
+      "name": "Dev Tools",
+      "color": "#46d369",
+      "items": [
+        {
+          "id": "53ee82f4-fea2-4c6e-9f2d-13ca2120ad62",
+          "title": "GitHub",
+          "url": "https://github.com",
+          "type": "link",
+          "description": "Code hosting platform",
+          "thumbnail": "",
+          "addedAt": "2026-05-16T17:33:15.935Z"
+        }
+      ]
+    }
+  ],
+  "deletedLog": []
+}
